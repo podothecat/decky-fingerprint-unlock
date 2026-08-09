@@ -1,0 +1,11 @@
+{
+  "name": "Ally Fingerprint Unlock",
+  "author": "podothecat",
+  "flags": ["root"],
+  "api_version": 1,
+  "publish": {
+    "tags": ["fingerprint", "security", "lockscreen", "ally"],
+    "description": "Unlock Steam's gaming-mode lock screen with the fingerprint sensor instead of typing the PIN. Developed on the ROG Xbox Ally X; works with any device fprintd can verify. PIN entry always stays available as a fallback. Requires a patched libfprint with SDCP support -- see the repository README.",
+    "image": ""
+  }
+}

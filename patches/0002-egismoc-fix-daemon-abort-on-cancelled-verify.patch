@@ -1,0 +1,60 @@
+From: podothecat
+Subject: [PATCH] egismoc: don't leave task_ssm parked when waiting for a finger fails
+
+An aborted or timed-out verify kills fprintd outright:
+
+    libfprint-egismoc:ERROR:../libfprint/drivers/egismoc/egismoc.c:1908:egismoc_open:
+    assertion failed: (self->task_ssm == NULL)
+    fprintd.service: Main process exited, code=dumped, status=6/ABRT
+
+In the *_WAIT_FINGER state the parent task_ssm is parked, waiting for the wait-finger
+SSM to call fpi_ssm_next_state() on it once a finger arrives. If that SSM instead fails
+-- a cancelled verify, or its own "Timed out trying to detect finger on sensor" --
+egismoc_wait_finger_ssm_done() reports the action error directly and never touches the
+parent. The action ends, the device may then be closed, but self->task_ssm is still
+set, so the next egismoc_open() trips the assertion and takes the whole daemon down.
+
+Observed on 1c7a:0588 (ROG Xbox Ally X), reproducible every time: abort a verify, then
+claim the device again from the same fprintd process. Clients see the daemon vanish as
+"failed to claim device: GDBus.Error:org.freedesktop.DBus.Error.NoReply: Remote peer
+disconnected". The attempt after that succeeds, because D-Bus activates a fresh
+fprintd -- so the failure alternates and reads as flaky hardware rather than a crash.
+
+Fail the parent SSM instead, and let egismoc_task_ssm_done() clear the pointer and
+report the error exactly once. Both functions take ownership of the GError, so it is
+handed to exactly one of them.
+
+egismoc_open(), egismoc_cancel() and egismoc_close() are byte-identical between
+libfprint 1.94.10 and the egismoc-sdcp fork, so this is not fork-specific.
+---
+ libfprint/drivers/egismoc/egismoc.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
+
+diff --git a/libfprint/drivers/egismoc/egismoc.c b/libfprint/drivers/egismoc/egismoc.c
+--- a/libfprint/drivers/egismoc/egismoc.c
++++ b/libfprint/drivers/egismoc/egismoc.c
+@@ -360,7 +361,23 @@ egismoc_wait_finger_ssm_done (FpiSsm   *ssm,
+   self->wait_finger_start = 0;
+ 
+   if (error)
+-    fpi_device_action_error (device, error);
++    {
++      /*
++       * The parent task_ssm is parked in *_WAIT_FINGER waiting for this SSM to call
++       * fpi_ssm_next_state() on it. Reporting the action error directly leaves it
++       * parked forever: the action ends, the device can then be closed, but
++       * self->task_ssm is still set, so the next egismoc_open() aborts the whole
++       * process on g_assert (self->task_ssm == NULL).
++       *
++       * Fail the parent instead and let egismoc_task_ssm_done() clear the pointer and
++       * report the error exactly once. Both take ownership of the GError, so it must
++       * be handed to exactly one of them.
++       */
++      if (self->task_ssm)
++        fpi_ssm_mark_failed (self->task_ssm, error);
++      else
++        fpi_device_action_error (device, error);
++    }
+ }
+ 
+ static void

@@ -1,0 +1,30 @@
+{
+  "name": "ally-fingerprint",
+  "version": "1.0.0",
+  "description": "Unlock Steam's gaming-mode lock screen with the fingerprint sensor instead of the PIN",
+  "type": "module",
+  "scripts": {
+    "build": "echo 'dist/index.js is hand written -- see README.md' && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/podothecat/decky-fingerprint-unlock.git"
+  },
+  "keywords": [
+    "decky",
+    "steam-deck",
+    "fingerprint",
+    "fprintd",
+    "libfprint",
+    "rog-ally"
+  ],
+  "author": "podothecat",
+  "license": "MIT",
+  "devDependencies": {
+    "@decky/rollup": "^1.0.1",
+    "@decky/ui": "^4.7.2"
+  },
+  "dependencies": {
+    "@decky/api": "^1.1.2"
+  }
+}

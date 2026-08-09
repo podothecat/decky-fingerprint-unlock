@@ -1,0 +1,22 @@
+/* Let the Decky backend drive fprintd.
+ *
+ * Why this is needed: net.reactivated.fprint.device.verify ships as
+ * allow_any=no / allow_inactive=no / allow_active=yes. The Decky plugin backend runs
+ * from plugin_loader.service, which has no logind session at all, so it counts as
+ * neither active nor inactive-with-a-session and gets refused. setusername is
+ * auth_admin_keep and would need an interactive agent that does not exist behind a
+ * lock screen.
+ *
+ * Why it is not a meaningful privilege escalation: this grants only to uid 0. Root can
+ * already talk to the sensor directly, and Steam's own lock screen PIN is stored in
+ * plaintext and compared in JavaScript, so root already trivially owns this boundary.
+ *
+ * Remove with: sudo rm /etc/polkit-1/rules.d/49-ally-fingerprint.rules
+ */
+polkit.addRule(function (action, subject) {
+    if (subject.user == "root" &&
+        (action.id == "net.reactivated.fprint.device.verify" ||
+         action.id == "net.reactivated.fprint.device.setusername")) {
+        return polkit.Result.YES;
+    }
+});

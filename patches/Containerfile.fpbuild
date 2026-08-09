@@ -1,0 +1,4 @@
+FROM fedora:43
+RUN dnf -y install meson ninja-build gcc gcc-c++ pkgconf-pkg-config \
+      glib2-devel libgusb-devel openssl-devel cairo-devel pixman-devel \
+      libgudev-devel systemd-devel && dnf clean all

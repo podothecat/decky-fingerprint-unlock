@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Never commit a libfprint checkout or its build output -- patches/ carries the diffs,
+# and build.sh clones the fork itself.
+/libfprint-egismoc-sdcp/
+/sdcp/
+build/
+*.so
+*.so.*
+*.tar.gz
+
+node_modules/
+.DS_Store
+*.swp

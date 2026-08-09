@@ -1,0 +1,27 @@
+diff --git a/libfprint/drivers/egismoc/egismoc.c b/libfprint/drivers/egismoc/egismoc.c
+index ab0a19a..651660e 100644
+--- a/libfprint/drivers/egismoc/egismoc.c
++++ b/libfprint/drivers/egismoc/egismoc.c
+@@ -59,6 +59,7 @@ static const FpIdEntry egismoc_id_table[] = {
+   { .vid = 0x1c7a, .pid = 0x0584, .driver_data = EGISMOC_DRIVER_CHECK_PREFIX_TYPE1 | EGISMOC_DRIVER_MAX_ENROLL_STAGES_20 },
+   { .vid = 0x1c7a, .pid = 0x0586, .driver_data = EGISMOC_DRIVER_CHECK_PREFIX_TYPE1 | EGISMOC_DRIVER_MAX_ENROLL_STAGES_20 },
+   { .vid = 0x1c7a, .pid = 0x0587, .driver_data = EGISMOC_DRIVER_CHECK_PREFIX_TYPE1 | EGISMOC_DRIVER_MAX_ENROLL_STAGES_20 },
++  { .vid = 0x1c7a, .pid = 0x0588, .driver_data = EGISMOC_DRIVER_CHECK_PREFIX_TYPE1 | EGISMOC_DRIVER_MAX_ENROLL_STAGES_20 },
+   { .vid = 0x1c7a, .pid = 0x05a1, .driver_data = EGISMOC_DRIVER_CHECK_PREFIX_TYPE2 },
+   { .vid = 0x1c7a, .pid = 0x05a5, .driver_data = EGISMOC_DRIVER_CHECK_PREFIX_TYPE2 | EGISMOC_DRIVER_MAX_ENROLL_STAGES_15 },
+   { .vid = 0,      .pid = 0,      .driver_data = 0 }
+diff --git a/meson.build b/meson.build
+index e78539c..03b5439 100644
+--- a/meson.build
++++ b/meson.build
+@@ -288,6 +288,10 @@ foreach i : driver_helpers
+     endif
+ endforeach
+ 
++# SDCP core (fpi-sdcp-device.c) always needs OpenSSL, regardless of which
++# drivers are selected, so it cannot rely on the per-driver helper mapping.
++optional_deps += openssl_dep
++
+ if udev_rules.disabled()
+     install_udev_rules = false
+ endif
