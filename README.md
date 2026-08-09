@@ -175,5 +175,9 @@ root it on `window` and poll instead.
 
 ## License
 
-MIT — see [`LICENSE`](LICENSE). **Except `patches/`**, which modifies libfprint and is
-therefore LGPL-2.1-or-later.
+MIT — see [`LICENSE`](LICENSE).
+
+**Except [`patches/`](patches/).** Those files are modifications to libfprint and are
+therefore derivative works of it, so they carry libfprint's own license,
+**LGPL-2.1-or-later**, regardless of the MIT terms above. See
+[`patches/README.md`](patches/README.md).

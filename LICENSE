@@ -19,11 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----------------------------------------------------------------------------
-NOTE ON patches/
-
-The MIT terms above cover this plugin's own code. They do NOT cover the files
-in patches/*.patch, which are modifications to libfprint and are therefore
-derivative works of it. Those carry libfprint's own license,
-LGPL-2.1-or-later. See patches/README.md.
