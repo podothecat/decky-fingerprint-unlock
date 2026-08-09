@@ -1,6 +1,6 @@
 {
   "name": "ally-fingerprint",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Unlock Steam's gaming-mode lock screen with the fingerprint sensor instead of the PIN",
   "type": "module",
   "scripts": {

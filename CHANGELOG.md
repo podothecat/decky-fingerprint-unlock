@@ -1,9 +1,14 @@
 # Changelog
 
-## 1.0.0 — 2026-08-09
+## 0.1.0 — 2026-08-09
 
 First public release. Verified end to end on a ROG Xbox Ally X (`1c7a:0588`) running
 Bazzite.
+
+Numbered 0.1 rather than 1.0 deliberately: it has been exercised on exactly one machine,
+it needs a patched libfprint that no distro ships, and single-touch recognition is only
+about 67%. The unlock path itself is proven — the version number is about how far the
+testing reaches, not about whether it works.
 
 ### Unlocking
 
