@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true,
+
+    // Deliberately lenient. src/index.tsx is a port of hand-written JS that was verified
+    // on-device; the point of the port is that the body is unchanged, so it carries no
+    // annotations. Turning strict on would mean editing the verified logic to satisfy the
+    // compiler, which is the opposite of what this port is for. Tighten it in its own
+    // commit, incrementally, with a re-test on the device after each step.
+    "strict": false,
+    "noImplicitAny": false
+  },
+  "include": ["src"]
+}

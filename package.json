@@ -4,7 +4,7 @@
   "description": "Unlock Steam's gaming-mode lock screen with the fingerprint sensor instead of the PIN",
   "type": "module",
   "scripts": {
-    "build": "echo 'dist/index.js is hand written -- see README.md' && exit 1"
+    "build": "rollup -c"
   },
   "repository": {
     "type": "git",
@@ -22,7 +22,8 @@
   "license": "MIT",
   "devDependencies": {
     "@decky/rollup": "^1.0.1",
-    "@decky/ui": "^4.7.2"
+    "@decky/ui": "^4.7.2",
+    "@types/react": "16.14.62"
   },
   "dependencies": {
     "@decky/api": "^1.1.2"

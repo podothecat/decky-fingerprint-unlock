@@ -124,11 +124,26 @@ live: `SetActiveLockScreenProps` cannot be wrapped (mobx defines it `writable: f
 configurable: false`, so the assignment fails *silently*), and mobx itself is not
 reachable for a reaction. Don't "fix" this back into a patch.
 
-**`dist/index.js` is hand written.** There is no node/npm on the development machine. A
-built Decky frontend is a single ESM file taking React from `window.SP_REACT`, UI from
-`window.DFL`, and the backend bridge from a Decky loader global. Writing it directly skips
-the toolchain. If you have node, porting to TSX + `@decky/rollup` is straightforward — the
-API surface used is just `callable`, `toaster`, `definePlugin`, and a few `DFL` components.
+## Building the frontend
+
+```bash
+pnpm install
+pnpm run build      # rollup -c  ->  dist/index.js
+```
+
+Node 22+ and pnpm. `dist/index.js` **is committed** so that `install.sh` works without a
+toolchain; rebuild and commit it whenever you touch `src/`.
+
+`src/index.tsx` began life as a hand-written `dist/index.js`, because the development
+machine had no node. The port to the standard toolchain is deliberately a header swap:
+`SP` and `DFL` are namespace imports of the same globals `@decky/rollup` maps them back to
+(`react` → `SP_REACT`, `@decky/ui` → `DFL`), so the logic below the imports is unchanged
+from the build that was verified on the device. Keep it that way — if you modernise the
+body, do it in its own commit and re-test on hardware, because almost none of this can be
+verified anywhere but on a real lock screen.
+
+`tsconfig.json` is deliberately non-strict for the same reason. Tightening it means
+annotating verified code; do that incrementally, not as a side effect of something else.
 
 ## Known limitations
 

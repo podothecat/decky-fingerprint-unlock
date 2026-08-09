@@ -14,3 +14,8 @@ build/
 node_modules/
 .DS_Store
 *.swp
+
+# dist/index.js IS committed on purpose: install.sh copies it, and installing by hand
+# should not require a node toolchain. The sourcemap is not -- it is regenerated on every
+# build and only churns the diff.
+dist/*.map
