@@ -53,7 +53,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const ENABLED_KEY = "ally-fp.enabled";
 
 /* Defaults to OFF, deliberately. A no-touch `verify-match` has been observed on this
- * sensor (see RESUME.md) -- with auto-unlock on, that would open the device with no
+ * sensor (see docs/EVIDENCE.md) -- with auto-unlock on, that would open the device with no
  * finger present. Until that is understood and eliminated, unlocking is opt-in and the
  * user has to turn it on knowing what it means. Do not flip this default back without
  * a clean measurement showing no-touch matches are gone. */
@@ -76,7 +76,7 @@ function setEnabled(on) {
 
 // ---- the lock screen -----------------------------------------------------------
 // Both stores are globals in SharedJSContext (verified: they do not exist in the
-// Big Picture / MainMenu / QuickAccess targets). See RESUME.md for how they were found.
+// Big Picture / MainMenu / QuickAccess targets). See docs/DESIGN.md for how they were found.
 function stores() {
   const sec = window.securitystore;
   if (!sec || typeof sec.SetActiveLockScreenProps !== "function") return null;
